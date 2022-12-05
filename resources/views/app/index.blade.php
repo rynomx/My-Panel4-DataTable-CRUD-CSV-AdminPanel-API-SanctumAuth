@@ -29,7 +29,7 @@
                     VIEZU <b> APP </b>   
                 </div>         
             </div>
-            
+             
             <div class="login-box-body">
                 <p class="login-box-msg"><b>SELECT VEHICLE DATA</b></p>
                 <form  method="POST" action="{{ route('app') }}">
