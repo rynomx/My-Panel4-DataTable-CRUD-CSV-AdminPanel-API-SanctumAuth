@@ -7,6 +7,9 @@ use App\Models\vlfdata;
 use DataTables;
 use Illuminate\Support\Facades\Auth;
 
+use League\Csv\Writer;
+use stdClass;
+
 class VlfdataController extends Controller
 {
     /**
@@ -173,6 +176,49 @@ class VlfdataController extends Controller
 
         //return redirect('import');
         return redirect('vlfdata');
+    }
+
+    public function exportCSV() 
+    {
+
+        $csvExporter = new \Laracsv\Export();
+        $vlfdata = vlfdata::get();
+
+        // Register the hook before building
+        // $csvExporter->beforeEach(function ($vlfdata) {
+        //     $vlfdata->created_at = date('f', strtotime($user->created_at));
+        // });
+    
+        return $csvExporter
+            ->build($vlfdata, [
+                'id',
+                'title',
+                'SKU',
+                'parent_SKU',
+                'parent_id',
+                'vehicle_type',
+                'vehicle_make',
+                'vehicle_model',
+                'variant',
+                'vlf_type',
+                'fuel_type',
+                'price',
+                'k_type',
+                'economy_gain_bhp',
+                'economy_gain_nm',
+                'fuel_saving',
+                'original_bhp',
+                'original_torque',
+                'power_bhp',
+                'torque_nm',
+                'vswitch_support',
+                'perm_type',
+                'perm_make',
+                'perm_model',
+                'created_at',
+                'updated_at'
+            ])
+            ->download('VLF_Export_' . date('d-m-Y_H-i-s') . '.csv');
     }
 
 

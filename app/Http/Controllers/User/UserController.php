@@ -74,7 +74,7 @@ class UserController extends Controller
         // return redirect()->route('user.create');
         return redirect()->route('user');
     }
-
+ 
     public function edit($id)
     { 
     	if (Auth::user()->designation !== 'dev'){

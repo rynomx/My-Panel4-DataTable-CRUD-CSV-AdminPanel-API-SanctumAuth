@@ -18,9 +18,11 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
         "predis/predis": "^2.0",
+        "usmanhalalit/laracsv": "2.1",
         "yajra/laravel-datatables-oracle": "^9.14"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.7",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",

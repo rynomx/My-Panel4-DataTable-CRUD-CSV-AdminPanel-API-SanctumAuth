@@ -18,8 +18,7 @@
 			@endif
 
 			<li class="treeview 
-				{{ Request::segment(1) === 'user' ? 'active menu-open' : null }}
-				{{ Request::segment(1) === 'role' ? 'active menu-open' : null }}
+				{{ Request::segment(1) === 'vlf' ? 'active menu-open' : null }}
 				">
 				<a href="#">
 					<i class="fa fa-gear"></i>
@@ -44,6 +43,28 @@
 					{{-- @endif --}}
 				</ul>
 			</li> 
+
+			@if (Auth::user()->designation !== 'visitor')
+			<li class="treeview 
+				{{ Request::segment(1) === 'changerequest' ? 'active menu-open' : null }}
+				">
+				<a href="#">
+					<i class="fa fa-user"></i>
+					<span>CHANGE REQUESTS</span>
+					<span class="pull-right-container">
+						<i class="fa fa-angle-left pull-right"></i>
+					</span>
+				</a>
+				<ul class="treeview-menu">
+					<li class="{{ Request::segment(1) === 'changerequest' ? 'active' : null }}">
+						<a href="{{ route('change-request') }}" title="App Config">
+							<i class="fa fa-gear"></i> <span> View Change Requests</span>
+						</a>
+					</li>
+				</ul>
+
+			</li> 
+			@endif
 
 			<li class="treeview 
 				{{ Request::segment(1) === 'config' ? 'active menu-open' : null }}

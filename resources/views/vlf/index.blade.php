@@ -18,11 +18,18 @@
                                 <h2>VLF Database</h2>
                                 </div>
                                 <div class="pull-right mb-2">
-                                <a class="btn btn-success" onClick="add()" href="javascript:void(0)"> Add Variation Data</a>
+                                <a class="btn btn-primary" onClick="crequest()" href="javascript:void(0)"><i class="fa fa-send"></i> Submit Change Request</a>
                                 </div>
                                 <div class="pull-right mb-2">
-                                <a class="btn btn-success" onClick="importx()" href="javascript:void(0)"> Upload CSV</a>
+                                <a class="btn btn-success" onClick="add()" href="javascript:void(0)"><i class="fa fa-car"></i> Add VLF Data</a>
                                 </div>
+                                <div class="pull-right mb-2">
+                                <a class="btn btn-warning" onClick="importx()" href="javascript:void(0)"><i class="fa fa-upload"></i> Upload CSV</a>
+                                </div>
+                                <div class="pull-right mb-2">
+                                <a class="btn btn-danger" onClick="exportx()" href="javascript:void(0)"><i class="fa fa-download"></i> Export to CSV</a>
+                                </div>
+                                
                             </div>
                         </div>
                         @if ($message = Session::get('success'))
@@ -203,25 +210,92 @@
 
                     <!-- boostrap vlf import -->
                     <div class="modal fade" id="vlfimport-modal" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header text-center">
+                                <h4 class="modal-title" id="vlfimportModal"></h4>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- <form action="javascript:void(0)" id="vlfimportForm" name="vlfForm" class="form-horizontal" method="POST" enctype="multipart/form-data"> -->
+                                    <!-- <p>{{session('status')}} -->
+                                    <form method="POST" action="{{ url("vlfdata") }}" enctype="multipart/form-data">
+                                        {{ csrf_field() }}
+                                        <div class="form-group">
+                                            <label for="name" class="col-sm-2 control-label">VLF Title</label>
+                                            <div class="col-sm-12">
+                                            <input type="file" class="form-control" id="file" name="file" placeholder="Upload CSV - VLF File" required="">
+                                            </div>
+                                        </div>  
+
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button type="submit" name="submit" class="btn btn-warning" id="btn-save"><i class="fa fa-upload"></i>Upload VLF
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end bootstrap model -->
+
+                    <!-- boostrap vlf export -->
+                    <div class="modal fade" id="vlfexport-modal" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header text-center">
+                                <h4 class="modal-title" id="vlfexportModal"></h4>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- <form action="javascript:void(0)" id="vlfimportForm" name="vlfForm" class="form-horizontal" method="POST" enctype="multipart/form-data"> -->
+                                    <!-- <p>{{session('status')}} -->
+                                    <form method="POST" action="{{ url("vlfdata") }}" enctype="multipart/form-data">
+                                        {{ csrf_field() }}
+                                        <div class="col-sm-offset-5 col-sm-10">
+                                            <button type="submit" name="submit" class="btn btn-danger" id="btn-exportx"><i class="fa fa-download"></i>. Export to CSV
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end bootstrap model -->
+
+                    <!-- boostrap change request model -->
+                    <div class="modal fade" id="crequest-modal" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <h4 class="modal-title" id="vlfimportModal"></h4>
+                        <h4 class="modal-title" id="crequestModal"></h4>
                         </div>
                     <div class="modal-body">
-                        <!-- <form action="javascript:void(0)" id="vlfimportForm" name="vlfForm" class="form-horizontal" method="POST" enctype="multipart/form-data"> -->
-                        <!-- <p>{{session('status')}} -->
-                        <form method="POST" action="{{ url("vlfdata") }}" enctype="multipart/form-data">
-                            {{ csrf_field() }}
+                        <form action="javascript:void(0)" id="crequestForm" name="crequestForm" class="form-horizontal" method="POST" enctype="multipart/form-data">
+                            <!-- <input type="hidden" name="id" id="id">
+                            <input type="hidden" name="user_id" id="user_id">
+                            <input type="hidden" name="user_email" id="user_email"> -->
                             <div class="form-group">
-                                <label for="name" class="col-sm-2 control-label">VLF Title</label>
+                                <label for="name" class="col-sm-1 control-label">Type</label>
                                 <div class="col-sm-12">
-                                <input type="file" class="form-control" id="file" name="file" placeholder="Upload CSV - VLF File" required="">
+                                    <select id="type" name="type" class="form-control" size="4" aria-label="Request Type">
+                                        <option selected value="General Request">General Request</option>
+                                        <option value="Platform Related">Platform Related</option>
+                                        <option value="Data Related">Data Related</option>
+                                        <option value="Access Related">Access Related</option>
+                                    </select>
                                 </div>
                             </div>  
-
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" name="submit" class="btn btn-primary" id="btn-save"><i class="fa fa-check"></i>Upload VLF
+                            <div class="form-group">
+                                <label for="name" class="col-sm-1 control-label">Description</label>
+                                <div class="col-sm-12">
+                                <textarea style="height: 100px;"  class="form-control" id="description" name="description" maxlength="3000" required=""></textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-offset-5 col-sm-10">
+                                <button type="submit" class="btn btn-primary" id="btn-cr-save"><i class="fa fa-send"></i>Send Request
                                 </button>
                             </div>
                         </form>
@@ -243,7 +317,7 @@
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
-
+ 
     <script type="text/javascript">
     $(document).ready( function () {
     $.ajaxSetup({
@@ -300,59 +374,70 @@
     }   
 
     function importx(){
-        $('#vlfimportModal').html("Upload VLF CSV");
+        $('#vlfimportModal').html("Upload CSV");
         $('#vlfimport-modal').modal('show');
     }   
 
-    function editFunc(id){
-        $.ajax({
-        type:"POST",
-        url: "{{ url('editvlf') }}",
-        data: { id: id },
-        dataType: 'json',
-        success: function(res){
-        $('#vlfdataModal').html("Edit VLF");
-        $('#vlf-modal').modal('show');
-        $('#id').val(res.id);
-        $('#title').val(res.title);
-        $('#SKU').val(res.SKU);
-        $('#parent_SKU').val(res.parent_SKU);
-        $('#parent_id').val(res.parent_id);
-        $('#vehicle_type').val(res.vehicle_type);
-        $('#vehicle_make').val(res.vehicle_make);
-        $('#vehicle_model').val(res.vehicle_model);
-        $('#variant').val(res.variant);
-        $('#vlf_type').val(res.vlf_type);
-        $('#fuel_type').val(res.fuel_type);
-        $('#price').val(res.price);
-        $('#k_type').val(res.k_type);
-        $('#economy_gain_bhp').val(res.economy_gain_bhp);
-        $('#economy_gain_nm').val(res.economy_gain_nm);
-        $('#fuel_saving').val(res.fuel_saving);
-        $('#original_bhp').val(res.original_bhp);
-        $('#original_torque').val(res.original_torque);
-        $('#power_bhp').val(res.power_bhp);
-        $('#torque_nm').val(res.torque_nm);
-        $('#vswitch_support').val(res.vswitch_support);
-        }
-        });
+    function exportx(){
+        $('#vlfexportModal').html("Are you sure you want to Export to CSV?");
+        $('#vlfexport-modal').modal('show');
     }  
 
-    function deleteFunc(id){
-    if (confirm("You are about to Delete a VLF Record!") == true) {
-        var id = id;
-        // ajax
-        $.ajax({
-        type:"POST",
-        url: "{{ url('deletevlf') }}",
-        data: { id: id },
-        dataType: 'json',
-        success: function(res){
-        var oTable = $('#ajax-crud-datatable').dataTable();
-        oTable.fnDraw(false);
+    $('#btn-exportx').click(function() {
+        $('#vlfexport-modal').modal('hide');
+
+    });
+
+    function editFunc(id){
+            $.ajax({
+                type:"POST",
+                url: "{{ url('editvlf') }}",
+                data: { id: id },
+                dataType: 'json',
+                success: function(res){
+                    $('#vlfdataModal').html("Edit VLF");
+                    $('#vlf-modal').modal('show');
+                    $('#id').val(res.id);
+                    $('#title').val(res.title);
+                    $('#SKU').val(res.SKU);
+                    $('#parent_SKU').val(res.parent_SKU);
+                    $('#parent_id').val(res.parent_id);
+                    $('#vehicle_type').val(res.vehicle_type);
+                    $('#vehicle_make').val(res.vehicle_make);
+                    $('#vehicle_model').val(res.vehicle_model);
+                    $('#variant').val(res.variant);
+                    $('#vlf_type').val(res.vlf_type);
+                    $('#fuel_type').val(res.fuel_type);
+                    $('#price').val(res.price);
+                    $('#k_type').val(res.k_type);
+                    $('#economy_gain_bhp').val(res.economy_gain_bhp);
+                    $('#economy_gain_nm').val(res.economy_gain_nm);
+                    $('#fuel_saving').val(res.fuel_saving);
+                    $('#original_bhp').val(res.original_bhp);
+                    $('#original_torque').val(res.original_torque);
+                    $('#power_bhp').val(res.power_bhp);
+                    $('#torque_nm').val(res.torque_nm);
+                    $('#vswitch_support').val(res.vswitch_support);
+                }
+            });
         }
-        });
-    }
+
+
+    function deleteFunc(id){
+        if (confirm("You are about to Delete a VLF Record!") == true) {
+            var id = id;
+            // ajax
+            $.ajax({
+            type:"POST",
+            url: "{{ url('deletevlf') }}",
+            data: { id: id },
+            dataType: 'json',
+            success: function(res){
+            var oTable = $('#ajax-crud-datatable').dataTable();
+            oTable.fnDraw(false);
+            }
+            });
+        }
     }
 
     $('#vlfForm').submit(function(e) {
@@ -377,6 +462,34 @@
             }
         });
     });
+
+    function crequest(){
+        $('#crequestForm').trigger("reset");
+        $('#crequestModal').html("Send Change Request");
+        $('#crequest-modal').modal('show');
+    } 
+
+    $('#crequestForm').submit(function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            type:'POST',
+            url: "{{ url('change-request/store')}}",
+            data: formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success: (data) => {
+                $("#crequest-modal").modal('hide');
+                $("#btn-cr-save").html('Submit');
+                $("#btn-cr-save"). attr("disabled", false);
+            },
+            error: function(data){
+            console.log(data);
+            }
+        });
+    })
+
 
     </script>
 
